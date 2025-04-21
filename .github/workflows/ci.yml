@@ -33,6 +33,10 @@ jobs:
         run: |
           npm run test # Jest ejecutará los tests en tests/unit
 
+      - name: Install Playwright Browsers
+        run: |
+          npx playwright install --with-deps
+
       - name: Run End-to-End Tests (Playwright)
         run: |
           npx playwright test tests/e2e # Ejecutamos Playwright solo en tests/e2e
