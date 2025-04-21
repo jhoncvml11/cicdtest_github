@@ -1,35 +1,42 @@
-name: CI
+name: CI Workflow
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: "16" # Puedes cambiar a la versión que estés usando
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
 
-      - name: Run lint
-        run: npm run lint
+      - name: Run Lint
+        run: |
+          npm run lint
 
-      - name: Run unit tests
-        run: npm run test
+      - name: Run Unit Tests (Jest)
+        run: |
+          npm run test # Jest ejecutará los tests en tests/unit
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Run End-to-End Tests (Playwright)
+        run: |
+          npx playwright test tests/e2e # Ejecutamos Playwright solo en tests/e2e
 
-      - name: Run E2E tests
-        run: npm run test:e2e
+      - name: Build the project
+        run: |
+          npm run build
