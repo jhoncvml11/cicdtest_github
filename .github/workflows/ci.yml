@@ -31,16 +31,20 @@ jobs:
 
       - name: Run Unit Tests (Jest)
         run: |
-          npm run test # Jest ejecutará los tests en tests/unit
+          npm run test
+
+      - name: Build the project
+        run: |
+          npm run build
 
       - name: Install Playwright Browsers
         run: |
           npx playwright install --with-deps
 
-      - name: Run End-to-End Tests (Playwright)
-        run: |
-          npx playwright test tests/e2e # Ejecutamos Playwright solo en tests/e2e
-
-      - name: Build the project
-        run: |
-          npm run build
+      - name: Run Playwright Tests (with server)
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 2
+          command: |
+            npx start-server-and-test 'npm run start' http://localhost:3000 'npx playwright test tests/e2e'
