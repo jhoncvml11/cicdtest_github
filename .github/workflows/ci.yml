@@ -50,9 +50,7 @@ jobs:
             npx start-server-and-test 'npm run start' http://localhost:3000 'npx playwright test tests/e2e'
 
       - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npm install -g vercel
-          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
 
